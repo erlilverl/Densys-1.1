@@ -30,6 +30,7 @@ public class LocationTracker extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 second
     public static double latitude; // latitude
     public static double longitude; // longitude
+    public static float accuracy; // longitude
     private final Context mContext;
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -113,6 +114,7 @@ location.getAccuracy();
 
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+                                accuracy = location.getAccuracy();
                             }
                         }
                         System.out.println("location is null");
@@ -125,6 +127,7 @@ location.getAccuracy();
                     } else {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
+                        accuracy = location.getAccuracy();
                         System.out.println(latitude + "  " + longitude);
 
                     }
@@ -169,6 +172,14 @@ location.getAccuracy();
 
         // return latitude
         return latitude;
+    }
+    public double getAccuracy() {
+        if (location != null) {
+            accuracy = location.getAccuracy();
+        }
+
+        // return latitude
+        return accuracy;
     }
 
     /**
@@ -228,10 +239,34 @@ location.getAccuracy();
         alertDialog.show();
     }
 
+    /**
+     * Function to show retry alert dialog
+     * if location accuracy is less
+     */
+    public void showRetryAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS not accurate enough");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS location is not accurate enough. Please try again.");
+
+        // on pressing cancel button
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
     @Override
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        accuracy = location.getAccuracy();
     }
 
     @Override
