@@ -124,12 +124,12 @@ public class PatientVisit extends AppCompatActivity {
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, gps);
                 // check if GPS enabled
                 if (gps.canGetLocation()) {
-                    if (gps.getAccuracy() < 200.0) {
+                    if (gps.getAccuracy() < 200.0 && gps.getAccuracy() > 0) {
                         setLatText(gps.getLatitude());
                         setLongText(gps.getLongitude());
                         // \n is for new line
-                        latitude.setText(String.valueOf(getLatText()));
-                        longitude.setText(String.valueOf(getLongText()));
+                        latitude.setText(String.format("%.4f",getLatText()));
+                        longitude.setText(String.format("%.4f",getLongText()));
                     } else{
 
                         gps.showRetryAlert();
